@@ -1,0 +1,11 @@
+{
+  "name": "library-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Library Management System - Data Layer with Prisma ORM and PostgreSQL",
+  "scripts": {
+    "prisma:generate": "npm run --prefix api prisma:generate",
+    "prisma:migrate": "npm run --prefix api prisma:migrate",
+    "prisma:seed": "npm run --prefix api prisma:seed"
+  }
+}
