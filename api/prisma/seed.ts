@@ -1,4 +1,5 @@
 import { PrismaClient, Role } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -41,26 +42,32 @@ async function main() {
     console.log(`  ✓ Genre ready: ${genre.name}`);
   }
 
-  // 2. Seed Users with Role Enum (LIBRARIAN and PATRON)
+  // 2. Seed Users with Role Enum (LIBRARIAN and PATRON) and hashed password
+  const defaultPasswordHash = await bcrypt.hash('Password123!', 10);
+
   const usersData = [
     {
       email: 'librarian@library.org',
       name: 'Eleanor Vance',
+      password: defaultPasswordHash,
       role: Role.LIBRARIAN,
     },
     {
       email: 'alex.patron@example.com',
       name: 'Alex Mercer',
+      password: defaultPasswordHash,
       role: Role.PATRON,
     },
     {
       email: 'sarah.reader@example.com',
       name: 'Sarah Connor',
+      password: defaultPasswordHash,
       role: Role.PATRON,
     },
     {
       email: 'marcus.bookworm@example.com',
       name: 'Marcus Holloway',
+      password: defaultPasswordHash,
       role: Role.PATRON,
     },
   ];
@@ -70,7 +77,7 @@ async function main() {
   for (const userData of usersData) {
     const user = await prisma.user.upsert({
       where: { email: userData.email },
-      update: { name: userData.name, role: userData.role },
+      update: { name: userData.name, role: userData.role, password: userData.password },
       create: userData,
     });
     users[user.email] = user;
@@ -85,6 +92,7 @@ async function main() {
       author: 'Harper Lee',
       isbn: '978-0061120084',
       publishedYear: 1960,
+      totalCopies: 5,
       genreName: 'Fiction',
     },
     {
@@ -92,6 +100,7 @@ async function main() {
       author: 'F. Scott Fitzgerald',
       isbn: '978-0743273565',
       publishedYear: 1925,
+      totalCopies: 3,
       genreName: 'Fiction',
     },
     {
@@ -99,6 +108,7 @@ async function main() {
       author: 'Jane Austen',
       isbn: '978-0141439518',
       publishedYear: 1813,
+      totalCopies: 4,
       genreName: 'Fiction',
     },
     {
@@ -106,6 +116,7 @@ async function main() {
       author: 'Gabriel García Márquez',
       isbn: '978-0060883287',
       publishedYear: 1967,
+      totalCopies: 3,
       genreName: 'Fiction',
     },
 
@@ -115,6 +126,7 @@ async function main() {
       author: 'Frank Herbert',
       isbn: '978-0441172719',
       publishedYear: 1965,
+      totalCopies: 6,
       genreName: 'Science Fiction',
     },
     {
@@ -122,6 +134,7 @@ async function main() {
       author: 'William Gibson',
       isbn: '978-0441569595',
       publishedYear: 1984,
+      totalCopies: 4,
       genreName: 'Science Fiction',
     },
     {
@@ -129,6 +142,7 @@ async function main() {
       author: 'Isaac Asimov',
       isbn: '978-0553293357',
       publishedYear: 1951,
+      totalCopies: 4,
       genreName: 'Science Fiction',
     },
     {
@@ -136,6 +150,7 @@ async function main() {
       author: 'Douglas Adams',
       isbn: '978-0345391803',
       publishedYear: 1979,
+      totalCopies: 5,
       genreName: 'Science Fiction',
     },
 
@@ -145,6 +160,7 @@ async function main() {
       author: 'Dan Brown',
       isbn: '978-0307474278',
       publishedYear: 2003,
+      totalCopies: 5,
       genreName: 'Mystery & Thriller',
     },
     {
@@ -152,6 +168,7 @@ async function main() {
       author: 'Gillian Flynn',
       isbn: '978-0307588371',
       publishedYear: 2012,
+      totalCopies: 3,
       genreName: 'Mystery & Thriller',
     },
     {
@@ -159,6 +176,7 @@ async function main() {
       author: 'Stieg Larsson',
       isbn: '978-0307949486',
       publishedYear: 2005,
+      totalCopies: 4,
       genreName: 'Mystery & Thriller',
     },
     {
@@ -166,6 +184,7 @@ async function main() {
       author: 'Agatha Christie',
       isbn: '978-0062073488',
       publishedYear: 1939,
+      totalCopies: 6,
       genreName: 'Mystery & Thriller',
     },
 
@@ -175,6 +194,7 @@ async function main() {
       author: 'Yuval Noah Harari',
       isbn: '978-0062316097',
       publishedYear: 2014,
+      totalCopies: 5,
       genreName: 'Non-Fiction',
     },
     {
@@ -182,6 +202,7 @@ async function main() {
       author: 'Tara Westover',
       isbn: '978-0399590504',
       publishedYear: 2018,
+      totalCopies: 4,
       genreName: 'Non-Fiction',
     },
     {
@@ -189,6 +210,7 @@ async function main() {
       author: 'Daniel Kahneman',
       isbn: '978-0374533557',
       publishedYear: 2011,
+      totalCopies: 3,
       genreName: 'Non-Fiction',
     },
     {
@@ -196,6 +218,7 @@ async function main() {
       author: 'Walter Isaacson',
       isbn: '978-1451648539',
       publishedYear: 2011,
+      totalCopies: 4,
       genreName: 'Non-Fiction',
     },
 
@@ -205,6 +228,7 @@ async function main() {
       author: 'Robert C. Martin',
       isbn: '978-0132350884',
       publishedYear: 2008,
+      totalCopies: 7,
       genreName: 'Technology & Computing',
     },
     {
@@ -212,6 +236,7 @@ async function main() {
       author: 'Martin Kleppmann',
       isbn: '978-1449373320',
       publishedYear: 2017,
+      totalCopies: 6,
       genreName: 'Technology & Computing',
     },
     {
@@ -219,6 +244,7 @@ async function main() {
       author: 'David Thomas, Andrew Hunt',
       isbn: '978-0135957059',
       publishedYear: 2019,
+      totalCopies: 5,
       genreName: 'Technology & Computing',
     },
     {
@@ -226,6 +252,7 @@ async function main() {
       author: 'Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides',
       isbn: '978-0201633610',
       publishedYear: 1994,
+      totalCopies: 4,
       genreName: 'Technology & Computing',
     },
   ];
@@ -244,6 +271,7 @@ async function main() {
         title: book.title,
         author: book.author,
         publishedYear: book.publishedYear,
+        totalCopies: book.totalCopies,
         genreId: genre.id,
       },
       create: {
@@ -251,6 +279,7 @@ async function main() {
         author: book.author,
         isbn: book.isbn,
         publishedYear: book.publishedYear,
+        totalCopies: book.totalCopies,
         genreId: genre.id,
       },
     });
@@ -293,7 +322,6 @@ async function main() {
     const user = users[rev.userEmail];
 
     if (book && user) {
-      // Avoid duplicate reviews in seed
       const existing = await prisma.review.findFirst({
         where: {
           bookId: book.id,

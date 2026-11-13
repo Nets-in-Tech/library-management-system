@@ -16,6 +16,7 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String
+  password  String
   role      Role     @default(PATRON)
   reviews   Review[]
   createdAt DateTime @default(now())
@@ -37,6 +38,7 @@ model Book {
   author        String
   isbn          String?  @unique
   publishedYear Int?
+  totalCopies   Int      @default(1)
   genreId       Int
   genre         Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade)
   reviews       Review[]
