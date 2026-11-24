@@ -19,6 +19,5 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
   },
-  "include": ["api/src/**/*", "api/prisma/**/*"]
+  "include": ["src/**/*", "prisma/**/*"]
 }
-
